@@ -1,13 +1,7 @@
 from fastapi import FastAPI
 
-app = FastAPI()
+from app.api.router import router as api_v1_router
 
+app = FastAPI(title="Receipt API", version="0.1.0")
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+app.include_router(api_v1_router)

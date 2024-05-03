@@ -7,9 +7,22 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-fastapi = "^0.110.3"
+fastapi = {extras = ["all"], version = "^0.110.3"}
 uvicorn = "^0.29.0"
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.29"}
+alembic = "^1.13.1"
+asyncpg = "^0.29.0"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+argon2-cffi = "^23.1.0"
+fastapi-filter = {extras = ["sqlalchemy"], version = "^1.1.0"}
+pytest = "^8.2.0"
+pytest-asyncio = "^0.23.6"
+faker = "^25.0.1"
 
+
+[tool.poetry.group.dev.dependencies]
+black = {extras = ["d"], version = "^24.4.2"}
 
 [build-system]
 requires = ["poetry-core"]

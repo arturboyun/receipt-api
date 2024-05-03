@@ -1,0 +1,26 @@
+services:
+  app:
+    build: .
+    container_name: receipt-app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app
+    env_file:
+      - .env
+    depends_on:
+      - db
+    environment:
+      - ENV=production
+  db:
+    image: postgres:16.2-alpine
+    container_name: receipt-db
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
+volumes:
+  postgres_data:
+  redis_data:
