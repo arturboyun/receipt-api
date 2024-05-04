@@ -33,11 +33,10 @@ async def test_create_receipt(client: TestClient, session: AsyncSession) -> None
 
 @pytest.mark.asyncio
 async def test_get_receipt(client: TestClient, session: AsyncSession) -> None:
-    auth_headers = await get_access_token_headers()
     receipt = await create_random_receipt(session, "cash")
     print(receipt.id)
 
-    response = client.get(f"/api/v1/receipt/{receipt.id}", headers=auth_headers)
+    response = client.get(f"/api/v1/receipt/{receipt.id}")
     response_data = response.json()
     assert response.status_code == 200
     assert response_data["id"] == receipt.id
@@ -65,6 +64,9 @@ async def test_get_receipts(client: TestClient, session: AsyncSession) -> None:
         {"name": "test1", "price": 123.0, "quantity": 2, "total": 246.0},
         {"name": "asdf", "price": 21.0, "quantity": 6, "total": 126.0},
     ]
+
+    response = client.get("/api/v1/receipt")
+    assert response.status_code == 401
 
 
 @pytest.mark.asyncio
@@ -179,13 +181,12 @@ async def test_get_receipts_filter_by_total(client: TestClient, session: AsyncSe
 
 @pytest.mark.asyncio
 async def test_get_receipt_raw(client: TestClient, session: AsyncSession) -> None:
-    auth_headers = await get_access_token_headers()
     receipt = await create_random_receipt(session, "cash")
 
-    response = client.get(f"/api/v1/receipt/raw/{receipt.id}", headers=auth_headers)
+    response = client.get(f"/api/v1/receipt/raw/{receipt.id}")
     response_data = response.text
     assert response.status_code == 200
     assert receipt.user.name in response_data
 
-    response = client.get(f"/api/v1/receipt/raw/{receipt.id + 1}", headers=auth_headers)
+    response = client.get(f"/api/v1/receipt/raw/{receipt.id + 1}")
     assert response.status_code == 404
