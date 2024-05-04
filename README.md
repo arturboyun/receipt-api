@@ -12,4 +12,10 @@ This is a simple API that allows you to create and share your receipts with othe
 1. Clone the repository
 2. Install the dependencies with poetry `poetry install`
 3. Create a copy of `.env.dist` as `.env` file in the root directory and fill it.
-4. Run the application with `make dev`
+4. Start database in docker with `make docker-db`
+5. Run migrations with `make migrate`
+6. Run the application with `make dev`
+
+### Testing
+1. Start database in docker with `make docker-db`
+2. Run tests with `make test`
