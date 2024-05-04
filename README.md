@@ -19,3 +19,7 @@ This is a simple API that allows you to create and share your receipts with othe
 ### Testing
 1. Start database in docker with `make docker-db`
 2. Run tests with `make test`
+
+
+### Generate Secret Key
+You can generate a secret key for `.env` with `python -c "import secrets; print(secrets.token_urlsafe(32))"`
