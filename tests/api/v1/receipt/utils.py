@@ -1,4 +1,5 @@
 import datetime
+from decimal import Decimal
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -27,7 +28,11 @@ async def create_random_user(session: AsyncSession) -> User:
 
 
 async def create_random_receipt(
-    session: AsyncSession, payment_type: str, created_at: datetime.datetime | None = None
+    session: AsyncSession,
+    payment_type: str,
+    *,
+    total: float | Decimal | None = None,
+    created_at: datetime.datetime | None = None,
 ) -> Receipt:
     user = await create_random_user(session)
     owner_id = user.id
@@ -45,9 +50,10 @@ async def create_random_receipt(
     )
     receipt = await receipt_service.create(session, data, owner_id)
 
-    if not created_at:
-        created_at = datetime.datetime.now(datetime.UTC)
-    receipt.created_at = created_at
+    if created_at:
+        receipt.created_at = created_at
+    if total:
+        receipt.total = total
     await session.commit()
     await session.refresh(receipt)
     return receipt

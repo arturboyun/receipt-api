@@ -2,6 +2,7 @@ from typing import Generator, AsyncGenerator
 
 import pytest
 import pytest_asyncio
+from faker import Faker
 from fastapi.testclient import TestClient
 from sqlalchemy import event, select, delete, text
 from sqlalchemy.exc import SQLAlchemyError
@@ -33,12 +34,10 @@ def engine():
 
 
 @pytest.fixture()
-async def create(engine):
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    yield
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
+def faker() -> Faker:
+    faker = Faker()
+    Faker.seed(0)
+    return faker
 
 
 async def init_db(session: AsyncSession):
@@ -77,4 +76,3 @@ async def session() -> AsyncGenerator:
             await async_session.execute(delete(Payment))
             # await async_session.execute(delete(User))
             await async_session.commit()
-

@@ -21,7 +21,11 @@ class ReceiptFilter(Filter):
     rest__gt: float | None = None
     rest__gte: float | None = None
     payment: PaymentFilter | None = FilterDepends(with_prefix("payment", PaymentFilter))
+    total: float | None = None
+    rest: float | None = None
+    created_at: datetime.datetime | None = None
+    search: str | None = None
 
     class Constants(Filter.Constants):
         model = Receipt
-        # search_model_fields = ["name"]
+        search_model_fields = ["total", "rest", "created_at"]
